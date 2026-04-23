@@ -121,7 +121,6 @@
     color: var(--accent);
     margin-bottom: 1.5rem;
     opacity: 0;
-    animation: fadeUp 0.8s ease 0.2s forwards;
   }
 
   .hero-title {
@@ -132,7 +131,6 @@
     letter-spacing: -0.02em;
     margin-bottom: 2rem;
     opacity: 0;
-    animation: fadeUp 0.8s ease 0.4s forwards;
   }
 
   .hero-title .line2 {
@@ -151,13 +149,11 @@
     line-height: 1.8;
     margin-bottom: 3rem;
     opacity: 0;
-    animation: fadeUp 0.8s ease 0.6s forwards;
   }
 
   .hero-actions {
     display: flex; gap: 1rem; align-items: center;
     opacity: 0;
-    animation: fadeUp 0.8s ease 0.8s forwards;
   }
 
   .btn-primary {
@@ -545,6 +541,89 @@
     transform: translateY(0);
   }
 
+  /* PRELOADER */
+  #preloader {
+    position: fixed; inset: 0;
+    background: var(--bg);
+    z-index: 99999;
+    display: flex; align-items: center; justify-content: center;
+    transition: opacity 0.7s ease, visibility 0.7s ease;
+  }
+  #preloader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+  .pre-content { display: flex; flex-direction: column; align-items: center; gap: 2rem; }
+  .pre-initials {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(5rem, 14vw, 10rem);
+    letter-spacing: -0.04em;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(232,232,232,0.15);
+    position: relative;
+    user-select: none;
+  }
+  .pre-initials::before,
+  .pre-initials::after {
+    content: 'Nazrul Nazri';
+    position: absolute; inset: 0;
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+  }
+  .pre-initials::before {
+    color: var(--accent);
+    clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+    animation: glitchTop 2.5s infinite linear;
+  }
+  .pre-initials::after {
+    color: var(--accent2);
+    clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+    animation: glitchBot 2.5s infinite linear;
+  }
+  @keyframes glitchTop {
+    0%,88%,100% { transform: translate(0); }
+    90% { transform: translate(-5px,-2px) skewX(-2deg); }
+    93% { transform: translate(5px,0); }
+    96% { transform: translate(-3px,1px); }
+    98% { transform: translate(4px,-1px); }
+  }
+  @keyframes glitchBot {
+    0%,88%,100% { transform: translate(0); }
+    90% { transform: translate(5px,2px) skewX(2deg); }
+    93% { transform: translate(-5px,0); }
+    96% { transform: translate(3px,-1px); }
+    98% { transform: translate(-4px,1px); }
+  }
+  .pre-bar-wrap { width: 180px; height: 1px; background: var(--border); overflow: hidden; }
+  .pre-bar {
+    height: 100%; width: 0%;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+    transition: width 0.04s linear;
+  }
+  .pre-label { font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); }
+  .pre-slogan {
+    font-size: 0.75rem;
+    color: rgba(232,232,232,0.25);
+    font-style: italic;
+    letter-spacing: 0.05em;
+    margin-top: -0.5rem;
+    animation: fadeIn 1.5s ease 0.5s both;
+  }
+  .pre-dots::after { content: ''; animation: dots 1s steps(3,end) infinite; }
+  @keyframes dots {
+    0%   { content: ''; }
+    33%  { content: '.'; }
+    66%  { content: '..'; }
+    100% { content: '...'; }
+  }
+  /* CINEMATIC REVEAL */
+  .cinematic {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
+  }
+  .cinematic.in { opacity: 1; transform: translateY(0); }
+
   /* Noise overlay */
   body::after {
     content: '';
@@ -574,17 +653,28 @@
 </head>
 <body>
 
+<!-- PRELOADER -->
+<div id="preloader">
+  <div class="pre-content">
+    <div class="pre-initials" id="preInitials">Nazrul Nazri</div>
+    <div class="pre-bar-wrap"><div class="pre-bar" id="preBar"></div></div>
+    <div class="pre-label" id="preLabel">Initializing<span class="pre-dots"></span></div>
+    <div class="pre-slogan">I'd rather try everything than live with what ifs.</div>
+  </div>
+</div>
+
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">NN</a>
+  <a href="#" class="nav-logo">Nazrul Nazri</a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#projects">Projects</a></li>
     <li><a href="#skills">Skills</a></li>
     <li><a href="#contact">Contact</a></li>
+    <li><a href="https://github.com/NazIrNaz" target="_blank">GitHub ↗</a></li>
   </ul>
 </nav>
 
@@ -593,19 +683,19 @@
   <div class="hero-bg"></div>
   <div class="hero-grid"></div>
 
-  <p class="hero-label">// Kuala Lumpur, Malaysia</p>
-  <h1 class="hero-title">
+  <p class="hero-label cinematic">// Kuala Lumpur, Malaysia</p>
+  <h1 class="hero-title cinematic">
     Data<br>
     <span class="line2">Engineer<span class="accent-word">.</span></span>
   </h1>
-  <p class="hero-sub">
+  <p class="hero-sub cinematic">
     I design and build backend systems, data pipelines, and AI-driven applications.
     I build agentic systems where LLMs interact with APIs to automate real-world tasks.
     Currently a Data Engineer — aiming toward Software Architect.
   </p>
-  <div class="hero-actions">
+  <div class="hero-actions cinematic">
     <a href="#projects" class="btn-primary">Explore Projects →</a>
-    <a href="#contact" class="btn-ghost">Get in touch</a>
+    <a href="https://github.com/NazIrNaz" target="_blank" class="btn-ghost">GitHub ↗</a>
   </div>
 
   <p class="hero-quote">"I'd rather try everything than live with what ifs."</p>
@@ -703,20 +793,25 @@
       <div class="project-number">003</div>
       <div class="project-title">Automatch</div>
       <div class="project-tags">
+        <span class="tag">PHP</span>
         <span class="tag">Python</span>
-        <span class="tag">Decision Logic</span>
-        <span class="tag">Data Processing</span>
-        <span class="tag">API</span>
+        <span class="tag">Flask</span>
+        <span class="tag">MySQL</span>
+        <span class="tag">Tailwind CSS</span>
       </div>
-      <p class="project-desc">Personalized car recommendation system based on demographic analysis — unknowingly my first agentic pipeline before I knew what agentic meant.</p>
+      <p class="project-desc">AI-assisted car recommendation web app for Malaysian buyers. PHP + MySQL on the web tier, Flask API for scoring and ranking. Unknowingly my first agentic pipeline — before I knew what agentic meant.</p>
       <ul class="project-bullets">
-        <li>Built recommendation logic based on user profiles</li>
-        <li>Designed system flow for better car matching</li>
-        <li>Focused on practical decision support</li>
+        <li>Multi-profile system based on income, expenses, loans, and family size</li>
+        <li>Flask recommendation API accepting JSON payloads and returning ranked results</li>
+        <li>Wishlist, bookmarks, and side-by-side car comparison (Carvilla-style)</li>
+        <li>Roadmap: ML upgrade + explainable AI (XAI) for recommendation reasoning</li>
       </ul>
-      <div class="project-status">
-        <div class="status-dot"></div>
-        Academic Project
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-top:1rem;">
+        <div class="project-status">
+          <div class="status-dot live"></div>
+          Open Source · Academic Project
+        </div>
+        <a href="https://github.com/NazIrNaz/AutomatchV2" target="_blank" style="font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); text-decoration:none; border-bottom:1px solid rgba(200,241,53,0.3); padding-bottom:1px;">View on GitHub ↗</a>
       </div>
     </div>
 
@@ -800,8 +895,9 @@
       Open to opportunities, collaborations, or just a conversation about agentic systems, data engineering, or building things that actually work.
     </p>
     <div class="contact-links">
-      <a href="mailto:nazrulirzannazri@gmail.com" class="btn-primary">Email →</a>
-      <a href="https://www.linkedin.com/in/nazrulirzannazri" target="_blank" class="btn-ghost">LinkedIn ↗</a>
+      <a href="mailto:nazrulirnaz@gmail.com" class="btn-primary">Email →</a>
+      <a href="https://linkedin.com/in/nazrulirnaz" target="_blank" class="btn-ghost">LinkedIn ↗</a>
+      <a href="https://github.com/NazIrNaz" target="_blank" class="btn-ghost">GitHub ↗</a>
     </div>
   </div>
 </div>
@@ -812,7 +908,43 @@
 </footer>
 
 <script>
-  // Cursor
+  // ── PRELOADER ──────────────────────────────────────────────
+  const preloader = document.getElementById('preloader');
+  const preBar = document.getElementById('preBar');
+  let progress = 0;
+
+  const labels = ['Initializing', 'Loading assets', 'Almost there'];
+  const labelEl = document.querySelector('.pre-label');
+
+  const fillBar = setInterval(() => {
+    progress += Math.random() * 4 + 1;
+    if (progress >= 100) { progress = 100; clearInterval(fillBar); }
+    preBar.style.width = progress + '%';
+    if (progress > 33 && progress < 66) labelEl.innerHTML = 'Loading assets<span class="pre-dots"></span>';
+    if (progress >= 66) labelEl.innerHTML = 'Almost there<span class="pre-dots"></span>';
+    if (progress >= 100) {
+      setTimeout(() => {
+        preloader.classList.add('hidden');
+        startCinematic();
+      }, 400);
+    }
+  }, 40);
+
+  // ── CINEMATIC REVEAL ───────────────────────────────────────
+  function startCinematic() {
+    const els = document.querySelectorAll('.cinematic');
+    els.forEach((el, i) => {
+      setTimeout(() => el.classList.add('in'), i * 180);
+    });
+    // also trigger nav
+    document.querySelector('nav').style.transition = 'opacity 0.8s ease';
+    document.querySelector('nav').style.opacity = '1';
+  }
+
+  // hide nav initially
+  document.querySelector('nav').style.opacity = '0';
+
+  // ── CURSOR ─────────────────────────────────────────────────
   const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursorRing');
   let mx = 0, my = 0, rx = 0, ry = 0;
@@ -843,7 +975,7 @@
     });
   });
 
-  // Scroll reveal
+  // ── SCROLL REVEAL ──────────────────────────────────────────
   const observer = new IntersectionObserver(entries => {
     entries.forEach((entry, i) => {
       if (entry.isIntersecting) {
